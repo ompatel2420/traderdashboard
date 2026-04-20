@@ -1,0 +1,7 @@
+age_group,user_pct,avg_transactions_per_month,preferred_app,avg_ticket_size
+18-25,28.0,42,PhonePe,650
+26-35,27.0,58,Google Pay,1250
+36-45,21.0,35,PhonePe,2100
+46-55,15.0,18,Paytm,3200
+56-65,7.0,8,BHIM,2800
+65+,2.0,4,BHIM,1900
