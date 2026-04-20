@@ -148,13 +148,26 @@ def apply_hud_theme(fig):
 # ─────────────────────────────────────────────
 # DATA ENGINE
 # ─────────────────────────────────────────────
+import os
+
 @st.cache_data
 def load_data():
-    growth  = pd.read_csv("data/upi_growth.csv")
-    apps    = pd.read_csv("data/app_share.csv")
-    states  = pd.read_csv("data/state_wise.csv")
-    age     = pd.read_csv("data/age_group.csv")
-    timemap = pd.read_csv("data/time_heatmap.csv")
+    base_path = os.path.dirname(__file__)
+    
+    def get_path(filename):
+        return os.path.join(base_path, "data", filename)
+
+    try:
+        growth  = pd.read_csv(get_path("upi_growth.csv"))
+        apps    = pd.read_csv(get_path("app_share.csv"))
+        states  = pd.read_csv(get_path("state_wise.csv"))
+        age     = pd.read_csv(get_path("age_group.csv"))
+        timemap = pd.read_csv(get_path("time_heatmap.csv"))
+    except FileNotFoundError as e:
+        st.error(f"📡 CRITICAL_ERROR: Data Subsystem Offline. {e}")
+        st.info(f"Directory Content Check: {os.listdir(os.path.join(base_path, 'data'))}")
+        st.stop()
+
     month_order = {"Apr":1,"May":2,"Jun":3,"Jul":4,"Aug":5,"Sep":6,"Oct":7,"Nov":8,"Dec":9,"Jan":10,"Feb":11,"Mar":12}
     growth["month_num"] = growth["month"].map(month_order)
     growth = growth.sort_values(["year","month_num"]).reset_index(drop=True)
